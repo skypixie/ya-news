@@ -1,5 +1,6 @@
 import pytest
 from django.test.client import Client
+from datetime import date, timedelta
 
 from news.models import Comment, News
 
@@ -55,3 +56,25 @@ def comment(news, author):
 @pytest.fixture
 def comment_pk_for_args(comment):
     return (comment.id,)
+
+
+@pytest.fixture
+def generate_11_news():
+    """We can test how paginator works with it"""
+    news = (News(
+        title='Title',
+        text='Text',
+        date=date.today() + timedelta(days=i)
+    ) for i in range(11))
+    News.objects.bulk_create(news)
+
+
+@pytest.fixture
+def generate_comments(news, author):
+    comments = (Comment(
+        news=news,
+        author=author,
+        text='Text',
+        created=date.today() + timedelta(days=i)
+    ) for i in range(10))
+    Comment.objects.bulk_create(comments)
