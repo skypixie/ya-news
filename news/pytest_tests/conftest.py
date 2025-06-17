@@ -78,3 +78,10 @@ def generate_comments(news, author):
         created=date.today() + timedelta(days=i)
     ) for i in range(10))
     Comment.objects.bulk_create(comments)
+
+
+@pytest.fixture
+def form_data():
+    return {
+        'text': 'new text',
+    }
